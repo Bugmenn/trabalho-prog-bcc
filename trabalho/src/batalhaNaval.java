@@ -8,12 +8,12 @@ public class batalhaNaval {
     }
 
     private batalhaNaval() {
-        String matriz[][] = CriarMatriz();
+        char matriz[][] = CriarMatriz();
         int qtAcertos = 0;
         int qtJogadas = 0;
         int fim[] = {qtAcertos, qtJogadas}; // valores para confimar o fim do jogo
 
-        boolean continuar;
+        boolean continuar; // valor para continuar jogo
         
         do {
             Jogar(matriz, fim);
@@ -23,14 +23,15 @@ public class batalhaNaval {
         } while (continuar);
     }
 
-    private String[][] CriarMatriz() {
+    // cria a matriz e coloca as informações iniciais dentro
+    private char[][] CriarMatriz() {
         // criação matriz 8x8
-        String matriz[][] = new String[8][8];
+        char matriz[][] = new char[8][8];
 
         // colocar a "água" no tabuleiro
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                matriz[i][j] = "~";
+                matriz[i][j] = '~';
             }
         }
 
@@ -41,8 +42,8 @@ public class batalhaNaval {
             int numeroAleatorio2 = gerador.nextInt(8);
 
             // colocar os navios nas posições aleatorias
-            if (matriz[numeroAleatorio1][numeroAleatorio2].contains("~")) { // if para não colocar navios na mesma posição
-                matriz[numeroAleatorio1][numeroAleatorio2] = "N";
+            if (matriz[numeroAleatorio1][numeroAleatorio2] == '~') { // if para não colocar navios na mesma posição
+                matriz[numeroAleatorio1][numeroAleatorio2] = 'N';
 
             } else { // caso forem colocados na mesma posição refaz a tentativa
                 i--;
@@ -52,7 +53,8 @@ public class batalhaNaval {
         return matriz;
     }
 
-    private void Escrever(String matriz[][], boolean continuar) {
+    // realiza os prints do tabuleiro
+    private void Escrever(char matriz[][], boolean continuar) {
 
         if (continuar == true) { // se o jogo continuar será imprimido sem o local dos navios
             // escrever o tabuleiro
@@ -65,16 +67,16 @@ public class batalhaNaval {
 
                     if (j == 7) { // if para quebrar linha no ultimo valor
 
-                        if (matriz[i][j].contains("N")) { // if para não mostrar os navios ao jogador
-                            System.out.println("~");
+                        if (matriz[i][j] == 'N') { // if para não mostrar os navios ao jogador
+                            System.out.println('~');
                         } else {
                             System.out.println(matriz[i][j]);
                         }
 
                     } else {
 
-                        if (matriz[i][j].contains("N")) { // if para não mostrar navios ao jogador
-                            System.out.print("~ ");
+                        if (matriz[i][j] == 'N') { // if para não mostrar navios ao jogador
+                            System.out.print('~'+" ");
                         } else {
                             System.out.print(matriz[i][j]+" ");
                         }
@@ -101,7 +103,8 @@ public class batalhaNaval {
         }
     }
 
-    private void Jogar(String matriz[][], int fim[]) {
+    // faz as jogadas do player
+    private void Jogar(char matriz[][], int fim[]) {
         Scanner s = new Scanner(System.in); // criação do scanner (não fechei por que da problema de execução)
         System.out.println("Informe as coordenas (linha coluna):");
         // inputs do jogador
@@ -111,17 +114,17 @@ public class batalhaNaval {
         // verificação dos valores
         if (linha >= 0 && linha <= 7 && coluna >= 0 && coluna <= 7) {
 
-            if (matriz[linha][coluna].contains("N")) { // verifica se a casa tem navio
-                matriz[linha][coluna] = "X"; // coloca o valor de acerto em navio
+            if (matriz[linha][coluna] == 'N') { // verifica se a casa tem navio
+                matriz[linha][coluna] = 'X'; // coloca o valor de acerto em navio
                 System.out.println("Navio acertado!"); // informa que um navio foi acertado
                 fim[0]++; // acrescenta 1 em acertos
                 fim[1]++; // acrescenta 1 em jogadas
 
-            } else if (matriz[linha][coluna].contains("X") || matriz[linha][coluna].contains("O")) { // verifica se a casa já foi atacada
+            } else if (matriz[linha][coluna] == 'X' || matriz[linha][coluna] == 'O') { // verifica se a casa já foi atacada
                 System.out.println("Casa já atacada"); // informa que a casa já foi atacada
 
             } else { // se um navio não foi acertado
-                matriz[linha][coluna] = "O"; // coloca o valor de erro
+                matriz[linha][coluna] = 'O'; // coloca o valor de erro
                 System.out.println("Errou!"); // informa que não acertou
                 fim[1]++; // acrescenta 1 em jogadas 
             }
@@ -131,6 +134,8 @@ public class batalhaNaval {
         }
     }
 
+    // verifica as condições para terminar o jogo
+    // retorna falso caso o jogo acabe e verdadeiro para continuar
     private boolean Fim(int fim[]) {
         if (fim[0] == 10) { // se o jogador acertos os 10 navios ele ganha
             System.out.println("Jogador ganhou!!!!!");
