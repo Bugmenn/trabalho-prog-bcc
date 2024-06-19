@@ -106,7 +106,7 @@ public class batalhaNaval {
     // faz as jogadas do player
     private void Jogar(char matriz[][], int fim[]) {
         Scanner s = new Scanner(System.in); // criação do scanner (não fechei por que da problema de execução)
-        System.out.println("Informe as coordenas (linha coluna):");
+        System.out.println("Informe as coordenadas (linha coluna):");
         // inputs do jogador
         int linha = s.nextInt();
         int coluna = s.nextInt();
